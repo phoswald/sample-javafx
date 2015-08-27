@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="phoswald.MyController">
+  <VBox>
+    <Label text="I am the label!"/>
+    <Button text="I am the Button!" onAction="#handleTheButton"/>
+    <Button fx:id="button2" text="I am the 2nd Button!"/>
+  </VBox>
+</AnchorPane>

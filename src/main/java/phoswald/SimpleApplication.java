@@ -8,7 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class App extends Application
+public class SimpleApplication extends Application
 {
     @Override
     public void start(Stage primaryStage) {
@@ -26,7 +26,7 @@ public class App extends Application
 
         Scene scene = new Scene(root, 300, 250);
 
-        primaryStage.setTitle("Hello World!");
+        primaryStage.setTitle("I am the title of the stage.");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

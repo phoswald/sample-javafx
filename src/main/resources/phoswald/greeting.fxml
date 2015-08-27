@@ -7,5 +7,6 @@
     <Label text="I am the label!"/>
     <Button text="I am Button one" onAction="#handleButtonOne"/>
     <Button fx:id="button2" text="I am Button two"/>
+    <TextField fx:id="textField" text="ABC"/>
   </VBox>
 </AnchorPane>

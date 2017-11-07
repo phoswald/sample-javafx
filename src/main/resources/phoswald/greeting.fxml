@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="phoswald.MyController">
-  <VBox>
-    <Label text="I am the label!"/>
-    <Button text="I am Button one" onAction="#handleButtonOne"/>
-    <Button fx:id="button2" text="I am Button two"/>
-    <TextField fx:id="textField" text="ABC"/>
-  </VBox>
+  <BorderPane style="-fx-padding: 10">
+    <top>
+      <Label text="I am the label!" style="-fx-font-size:30; -fx-background-color: yellow"/>
+    </top>
+    <center>
+      <VBox style="-fx-spacing: 20">
+        <HBox style="-fx-spacing: 20; -fx-padding: 10">
+          <Button text="I am Button one" onAction="#handleButtonOne"/>
+          <Button fx:id="button2" text="I am Button two"/>
+        </HBox>
+        <TextField fx:id="textField" text="ABC" />
+      </VBox>
+    </center>
+  </BorderPane>
 </AnchorPane>

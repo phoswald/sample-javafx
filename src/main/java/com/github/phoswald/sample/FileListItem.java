@@ -1,4 +1,4 @@
-package phoswald;
+package com.github.phoswald.sample;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

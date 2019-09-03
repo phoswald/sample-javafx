@@ -4,21 +4,33 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>phoswald</groupId>
-  <artifactId>test-javafx-hello</artifactId>
-  <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
-  <name>test-javafx-hello</name>
+  <groupId>com.github.phoswald</groupId>
+  <artifactId>sample-javafx-hello</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <name>sample-javafx-hello</name>
 
   <properties>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.8.2</version>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>12.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-fxml</artifactId>
+      <version>12.0.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.4.0</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -26,11 +38,20 @@
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.0</version>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.1.1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+          </execution>
+        </executions>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <includeGroupIds>org.openjfx</includeGroupIds>
+          <outputDirectory>${project.build.directory}/modules</outputDirectory>
         </configuration>
       </plugin>
     </plugins>

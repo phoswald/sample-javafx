@@ -1,4 +1,4 @@
-package phoswald;
+package com.github.phoswald.sample;
 
 import java.io.IOException;
 
@@ -8,12 +8,12 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class BrowseApplication extends Application
-{
+public class BrowseApplication extends Application {
+
     @Override
     public void start(Stage primaryStage) throws IOException {
         primaryStage.setTitle("Open File");
-        Pane root = (Pane) FXMLLoader.load(getClass().getResource("browse.fxml"));
+        Pane root = (Pane) FXMLLoader.load(getClass().getResource("/fxml/browse.fxml"));
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }

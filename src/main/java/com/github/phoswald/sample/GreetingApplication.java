@@ -1,4 +1,4 @@
-package phoswald;
+package com.github.phoswald.sample;
 
 import java.io.IOException;
 
@@ -8,12 +8,12 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class MarkupApplication extends Application
-{
+public class GreetingApplication extends Application {
+
     @Override
     public void start(Stage primaryStage) throws IOException {
-        primaryStage.setTitle("I am the title of the stage.");
-        Pane root = (Pane) FXMLLoader.load(getClass().getResource("greeting.fxml"));
+        primaryStage.setTitle("Just an FXML Application");
+        Pane root = (Pane) FXMLLoader.load(getClass().getResource("/fxml/greeting.fxml"));
         primaryStage.setScene(new Scene(root, 300, 250));
         primaryStage.show();
     }

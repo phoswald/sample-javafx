@@ -5,10 +5,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="phoswald.MyController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.phoswald.sample.GreetingController">
   <BorderPane style="-fx-padding: 10">
     <top>
-      <Label text="I am the label!" style="-fx-font-size:30; -fx-background-color: yellow"/>
+      <Label text="I am the label!" style="-fx-font-size:20; -fx-background-color: yellow"/>
     </top>
     <center>
       <VBox style="-fx-spacing: 20">

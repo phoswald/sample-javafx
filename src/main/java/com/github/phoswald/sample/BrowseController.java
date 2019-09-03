@@ -1,4 +1,4 @@
-package phoswald;
+package com.github.phoswald.sample;
 
 import java.io.IOException;
 import java.net.URL;
@@ -41,7 +41,6 @@ public class BrowseController implements Initializable {
 
     @FXML
     private Button openButton;
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

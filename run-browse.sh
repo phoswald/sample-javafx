@@ -1,2 +1,2 @@
 #!/bin/bash
-java --add-modules=javafx.controls,javafx.fxml -p target/modules -cp "target/classes" com.github.phoswald.sample.BrowseApplication
+java -p target/modules:target/classes -m sample/com.github.phoswald.sample.BrowseApplication

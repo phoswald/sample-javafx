@@ -10,6 +10,14 @@ $ ./run-mp.sh
 $ ./run-cp.sh
 ~~~
 
+## Run JRE created by JLink 
+
+~~~
+$ mvn clean verify
+$ ./build-jre.sh
+$ ./target/jre/bin/run
+~~~
+
 ## Run from Eclipse
 
 The application can be started from Eclipse in a non-modular way.

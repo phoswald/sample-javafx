@@ -10,7 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.github.phoswald.sample.javafx.JavaFxApplication;
-import com.github.phoswald.sample.task.TaskRepository.Transaction;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -58,7 +57,7 @@ public class TaskListController implements Initializable {
         taskUpdated.setCellValueFactory(createCellValueFactory(TaskEntity::getTimestamp));
         try(TaskRepository repository = JavaFxApplication.createTaskRepository()) {
             logger.info("Loading all tasks");
-            List<TaskEntity> entities = repository.selectAllTasks(); 
+            List<TaskEntity> entities = repository.selectAllTasks();
             logger.info("Found {} tasks", entities.size());
             taskList.getItems().addAll(entities);
         } catch (RuntimeException e) {
@@ -74,17 +73,15 @@ public class TaskListController implements Initializable {
     private void onAdd(ActionEvent event) {
         logger.info("Add button fired: {}", addTitle.getText());
         try(TaskRepository repository = JavaFxApplication.createTaskRepository()) {
-            try(Transaction txn = repository.openTransaction()) {
-                TaskEntity entity = new TaskEntity();
-                entity.setNewTaskId();
-                entity.setUserId("guest");
-                entity.setTimestamp(Instant.now());
-                entity.setTitle(addTitle.getText());
-                entity.setDescription("n/a");
-                entity.setDone(false);
-                repository.createTask(entity);
-                taskList.getItems().add(entity);
-            }
+            TaskEntity entity = new TaskEntity();
+            entity.setNewTaskId();
+            entity.setUserId("guest");
+            entity.setTimestamp(Instant.now());
+            entity.setTitle(addTitle.getText());
+            entity.setDescription("n/a");
+            entity.setDone(false);
+            repository.createTask(entity);
+            taskList.getItems().add(entity);
         } catch (RuntimeException e) {
             logger.catching(e);
         }

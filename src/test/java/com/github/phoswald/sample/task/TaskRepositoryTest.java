@@ -4,22 +4,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
 import org.junit.jupiter.api.Test;
 
-import com.github.phoswald.sample.task.TaskRepository.Transaction;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 
 class TaskRepositoryTest {
 
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("taskDS");
 
-    private final TaskRepository testee = new TaskRepository(emf.createEntityManager());
-
     @Test
     void testCrud() {
-        try(Transaction txn = testee.openTransaction()) {
+        try(TaskRepository testee = new TaskRepository(emf)) {
             assertEquals(0, testee.selectAllTasks().size());
 
             TaskEntity entity = new TaskEntity();
@@ -28,7 +24,7 @@ class TaskRepositoryTest {
             entity.setDescription("Test Description");
             testee.createTask(entity);
         }
-        try(Transaction txn = testee.openTransaction()) {
+        try(TaskRepository testee = new TaskRepository(emf)) {
             List<TaskEntity> entites = testee.selectAllTasks();
 
             assertEquals(1, entites.size());

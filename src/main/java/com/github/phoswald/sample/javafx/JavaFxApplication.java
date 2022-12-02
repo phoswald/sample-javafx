@@ -4,15 +4,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.github.phoswald.sample.ConfigProvider;
 import com.github.phoswald.sample.task.TaskRepository;
 
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -24,7 +23,7 @@ public class JavaFxApplication extends Application {
     private static final Logger logger = LogManager.getLogger();
     private static final ConfigProvider config = new ConfigProvider();
     private static final EntityManagerFactory emf = createEntityManagerFactory();
-    
+
     private static Scene scene;
 
     public static void main(String[] args) {
@@ -40,7 +39,7 @@ public class JavaFxApplication extends Application {
         primaryStage.show();
         scene = primaryStage.getScene();
     }
-    
+
     public static void updateScene(String resouceName) {
         try {
             Pane root = (Pane) FXMLLoader.load(JavaFxApplication.class.getResource(resouceName));
@@ -51,7 +50,7 @@ public class JavaFxApplication extends Application {
     }
 
     public static TaskRepository createTaskRepository() {
-        return new TaskRepository(emf.createEntityManager());
+        return new TaskRepository(emf);
     }
 
     private static EntityManagerFactory createEntityManagerFactory() {

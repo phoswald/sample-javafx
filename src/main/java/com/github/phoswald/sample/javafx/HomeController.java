@@ -6,6 +6,9 @@ import java.util.ResourceBundle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.github.phoswald.sample.Application;
+import com.github.phoswald.sample.ApplicationModule;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,6 +18,8 @@ public class HomeController implements Initializable {
 
     private static final Logger logger = LogManager.getLogger();
 
+    private final Application application = ApplicationModule.instance().getApplication();
+
     @FXML
     private Button homeButton;
 
@@ -23,26 +28,26 @@ public class HomeController implements Initializable {
 
     @FXML
     private Button tasksButton;
-    
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         homeButton.setOnAction(this::onHome);
         sampleButton.setOnAction(this::onSample);
         tasksButton.setOnAction(this::onTasks);
     }
-    
+
     private void onHome(ActionEvent event) {
         logger.info("Home button fired.");
-        JavaFxApplication.updateScene("/fxml/home.fxml");
+        application.updateScene("/fxml/home.fxml");
     }
-    
+
     private void onSample(ActionEvent event) {
         logger.info("Sample button fired.");
-        JavaFxApplication.updateScene("/fxml/sample.fxml");
+        application.updateScene("/fxml/sample.fxml");
     }
-    
+
     private void onTasks(ActionEvent event) {
         logger.info("Tasks button fired.");
-        JavaFxApplication.updateScene("/fxml/task-list.fxml");
+        application.updateScene("/fxml/task-list.fxml");
     }
 }

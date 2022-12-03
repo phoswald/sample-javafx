@@ -1,5 +1,5 @@
 #!/bin/bash
 java \
-  -cp 'target/libs-mp/*:target/libs-cp/*:target/sample-javafx.jar' \
+  -cp 'target/*:target/libs-mp/*:target/libs-cp/*' \
   -Dapp.jdbc.url=jdbc:h2:./databases/task-db \
-  com.github.phoswald.sample.javafx.JavaFxApplicationLauncher
+  com.github.phoswald.sample.ApplicationLauncher

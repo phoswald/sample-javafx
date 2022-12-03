@@ -8,7 +8,8 @@ import java.util.function.Function;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.github.phoswald.sample.javafx.JavaFxApplication;
+import com.github.phoswald.sample.Application;
+import com.github.phoswald.sample.ApplicationModule;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -25,6 +26,8 @@ import javafx.util.Callback;
 public class SampleController implements Initializable {
 
     private static final Logger logger = LogManager.getLogger();
+
+    private final Application application = ApplicationModule.instance().getApplication();
 
     @FXML
     private Button homeButton;
@@ -68,7 +71,7 @@ public class SampleController implements Initializable {
 
     private void onHome(ActionEvent event) {
         logger.info("Home button fired.");
-        JavaFxApplication.updateScene("/fxml/home.fxml");
+        application.updateScene("/fxml/home.fxml");
     }
 
     private <S> Callback<CellDataFeatures<S, String>, ObservableValue<String>> createCellValueFactory( //

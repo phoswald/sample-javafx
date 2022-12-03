@@ -28,4 +28,4 @@ The application can be started from Eclipse in a non-modular way.
   (using the `-p` und `--add-modules` options).
 - It is possible, although not officially supported, to run the application in a non-modular way from the class path 
   (using only the `-cp` option). For that, the main class must not extend `javafx.application.Application` 
-  (see the additional main class `JavaFxApplicationLauncher`, which simply delegates to `JavaFxApplication`).
+  (see the additional main class `ApplicationLauncher`, which simply delegates to `Application`).

@@ -5,11 +5,13 @@ import java.time.Instant;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.github.phoswald.sample.javafx.JavaFxApplication;
+import com.github.phoswald.sample.Application;
+import com.github.phoswald.sample.ApplicationModule;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -26,6 +28,9 @@ import javafx.util.Callback;
 public class TaskListController implements Initializable {
 
     private static final Logger logger = LogManager.getLogger();
+
+    private final Application application = ApplicationModule.instance().getApplication();
+    private final Supplier<TaskRepository> repositoryFactory = ApplicationModule.instance().getTaskRepositoryFactory();
 
     @FXML
     private Button homeButton;
@@ -55,7 +60,7 @@ public class TaskListController implements Initializable {
         taskDone.setCellValueFactory(createCellValueFactory(TaskEntity::isDone));
         taskTitle.setCellValueFactory(createCellValueFactory(TaskEntity::getTitle));
         taskUpdated.setCellValueFactory(createCellValueFactory(TaskEntity::getTimestamp));
-        try(TaskRepository repository = JavaFxApplication.createTaskRepository()) {
+        try(TaskRepository repository = repositoryFactory.get()) {
             logger.info("Loading all tasks");
             List<TaskEntity> entities = repository.selectAllTasks();
             logger.info("Found {} tasks", entities.size());
@@ -67,12 +72,12 @@ public class TaskListController implements Initializable {
 
     private void onHome(ActionEvent event) {
         logger.info("Home button fired.");
-        JavaFxApplication.updateScene("/fxml/home.fxml");
+        application.updateScene("/fxml/home.fxml");
     }
 
     private void onAdd(ActionEvent event) {
         logger.info("Add button fired: {}", addTitle.getText());
-        try(TaskRepository repository = JavaFxApplication.createTaskRepository()) {
+        try(TaskRepository repository = repositoryFactory.get()) {
             TaskEntity entity = new TaskEntity();
             entity.setNewTaskId();
             entity.setUserId("guest");

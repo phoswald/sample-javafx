@@ -9,55 +9,50 @@ import com.github.phoswald.sample.utils.ConfigProvider;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-public interface ApplicationModule {
+public class ApplicationModule {
 
-    static void setup(ApplicationModule module, Application application) {
-        Global.module = module;
-        Global.application = application;
+    static {
+        // Hibernate: auto-detection falls back to JUL, slf4j is only used if logback is
+        // present
+        System.setProperty("org.jboss.logging.provider", "slf4j");
     }
 
-    static ApplicationModule instance() {
-        return Global.module;
+    private static ApplicationModule module = null;
+    private static Application application = null;
+
+    private EntityManagerFactory emf = null;
+
+    public static void setup(ApplicationModule module, Application application) {
+        ApplicationModule.module = module;
+        ApplicationModule.application = application;
     }
 
-    default Application getApplication() {
-        return Global.application;
+    public static ApplicationModule instance() {
+        return module;
     }
 
-    default ConfigProvider getConfigProvider() {
+    public Application getApplication() {
+        return application;
+    }
+
+    public ConfigProvider getConfigProvider() {
         return new ConfigProvider();
     }
 
-    default Supplier<TaskRepository> getTaskRepositoryFactory() {
+    public Supplier<TaskRepository> getTaskRepositoryFactory() {
         return () -> new TaskRepository(getEntityManagerFactory());
     }
 
-    default EntityManagerFactory getEntityManagerFactory() {
-        if (Global.emf == null) {
+    public EntityManagerFactory getEntityManagerFactory() {
+        if (emf == null) {
             var config = getConfigProvider();
             var props = new HashMap<>();
-            config.getConfigProperty("app.jdbc.driver") //
-                    .ifPresent(v -> props.put("jakarta.persistence.jdbc.driver", v));
-            config.getConfigProperty("app.jdbc.url") //
-                    .ifPresent(v -> props.put("jakarta.persistence.jdbc.url", v));
-            config.getConfigProperty("app.jdbc.username") //
-                    .ifPresent(v -> props.put("jakarta.persistence.jdbc.user", v));
-            config.getConfigProperty("app.jdbc.password") //
-                    .ifPresent(v -> props.put("jakarta.persistence.jdbc.password", v));
-            Global.emf = Persistence.createEntityManagerFactory("taskDS", props);
+            props.put("jakarta.persistence.jdbc.url", config.getConfigProperty("app.jdbc.url")
+                    .orElse("jdbc:h2:mem:test" + hashCode() + ";DB_CLOSE_DELAY=-1"));
+            props.put("jakarta.persistence.jdbc.user", config.getConfigProperty("app.jdbc.username").orElse("sa"));
+            props.put("jakarta.persistence.jdbc.password", config.getConfigProperty("app.jdbc.password").orElse("sa"));
+            emf = Persistence.createEntityManagerFactory("taskDS", props);
         }
-        return Global.emf;
-    }
-
-    public static class Global {
-
-        static {
-            // Hibernate: auto-detection falls back to JUL, slf4j is only used if logback is present
-            System.setProperty("org.jboss.logging.provider", "slf4j");
-        }
-
-        private static ApplicationModule module = null;
-        private static Application application = null;
-        private static EntityManagerFactory emf = null;
+        return emf;
     }
 }

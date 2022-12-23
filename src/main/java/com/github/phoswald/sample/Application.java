@@ -23,7 +23,7 @@ public class Application extends javafx.application.Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        ApplicationModule.setup(new ApplicationModule() { }, this);
+        ApplicationModule.setup(new ApplicationModule(), this);
 
         Pane root = (Pane) FXMLLoader.load(getClass().getResource("/fxml/home.fxml"));
         primaryStage.setTitle("sample-javafx");

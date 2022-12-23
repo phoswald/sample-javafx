@@ -6,16 +6,15 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
+import com.github.phoswald.sample.ApplicationModule;
 
 class TaskRepositoryTest {
 
-    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("taskDS");
+    private static final ApplicationModule module = new ApplicationModule() { };
 
     @Test
     void testCrud() {
-        try(TaskRepository testee = new TaskRepository(emf)) {
+        try(TaskRepository testee = new TaskRepository(module.getEntityManagerFactory())) {
             assertEquals(0, testee.selectAllTasks().size());
 
             TaskEntity entity = new TaskEntity();
@@ -24,7 +23,8 @@ class TaskRepositoryTest {
             entity.setDescription("Test Description");
             testee.createTask(entity);
         }
-        try(TaskRepository testee = new TaskRepository(emf)) {
+
+        try(TaskRepository testee = new TaskRepository(module.getEntityManagerFactory())) {
             List<TaskEntity> entites = testee.selectAllTasks();
 
             assertEquals(1, entites.size());

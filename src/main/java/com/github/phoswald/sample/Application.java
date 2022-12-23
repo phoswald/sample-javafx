@@ -2,8 +2,8 @@ package com.github.phoswald.sample;
 
 import java.io.IOException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 public class Application extends javafx.application.Application {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
     private Scene scene;
 
@@ -37,7 +37,7 @@ public class Application extends javafx.application.Application {
             Pane root = (Pane) FXMLLoader.load(getClass().getResource(resourceName));
             scene.setRoot(root);
         } catch (IOException e) {
-            logger.catching(e);
+            logger.error("Catching:", e);
         }
     }
 }

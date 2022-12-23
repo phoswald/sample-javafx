@@ -7,8 +7,8 @@ import java.util.ResourceBundle;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.github.phoswald.sample.Application;
 import com.github.phoswald.sample.ApplicationModule;
@@ -27,8 +27,7 @@ import javafx.util.Callback;
 
 public class TaskListController implements Initializable {
 
-    private static final Logger logger = LogManager.getLogger();
-
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     private final Application application = ApplicationModule.instance().getApplication();
     private final Supplier<TaskRepository> repositoryFactory = ApplicationModule.instance().getTaskRepositoryFactory();
 
@@ -66,7 +65,7 @@ public class TaskListController implements Initializable {
             logger.info("Found {} tasks", entities.size());
             taskList.getItems().addAll(entities);
         } catch (RuntimeException e) {
-            logger.catching(e);
+            logger.error("Catching:", e);
         }
     }
 
@@ -88,7 +87,7 @@ public class TaskListController implements Initializable {
             repository.createTask(entity);
             taskList.getItems().add(entity);
         } catch (RuntimeException e) {
-            logger.catching(e);
+            logger.error("Catching:", e);
         }
     }
 

@@ -3,8 +3,8 @@ package com.github.phoswald.sample.javafx;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.github.phoswald.sample.Application;
 import com.github.phoswald.sample.ApplicationModule;
@@ -16,8 +16,7 @@ import javafx.scene.control.Button;
 
 public class HomeController implements Initializable {
 
-    private static final Logger logger = LogManager.getLogger();
-
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     private final Application application = ApplicationModule.instance().getApplication();
 
     @FXML

@@ -1,16 +1,20 @@
 #!/bin/bash
+# Unfortunately, jlink cannot process automatic modules (`jlink -p ... --add-modules ALL-MODULE-PATH`).
+# Therefore, we have to add some modules and pass the remaining stuff to `java -cp ...` or `java -p ...`.
+# Modules passed to jlink can the be removed from the module path or class path.
 jlink \
-  -p 'target/libs-mp' \
-  --add-modules java.base,java.instrument,java.logging,java.management,java.naming,java.sql,javafx.base,javafx.controls,javafx.fxml,javafx.graphics \
+  -p target/sample-javafx-*-dist/lib/ \
+  --add-modules javafx.fxml,javafx.controls,jakarta.persistence,org.glassfish.jaxb.runtime,java.naming,org.slf4j.simple \
   --output target/jre \
   --strip-debug --no-man-pages --no-header-files
-cp -r target/libs-cp target/jre/
-cp target/*.jar target/jre/libs-cp/
-cat > target/jre/bin/run << 'EOF'
-#!/bin/bash
+cp -r target/sample-javafx-*-dist/lib/ target/jre/lib/jars
+(cd target/jre/lib/jars && rm javafx* jaxb* slf4j*)
+rm -rf target/jre/legal
+cat > target/jre/bin/run.sh << 'EOF'
+#!/bin/sh
 "$(dirname "$0")/java" \
-  -cp "$(dirname $0)"/../libs-cp/'*' \
-  -Dapp.jdbc.url=jdbc:h2:/home/philip/code/databases/task-db \
+  -p "$(dirname $0)/../lib/jars" \
+  --add-modules ALL-MODULE-PATH \
   com.github.phoswald.sample.Application
 EOF
-chmod a+x target/jre/bin/run
+chmod a+x target/jre/bin/run.sh

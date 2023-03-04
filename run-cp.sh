@@ -1,5 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 java \
-  -cp 'target/*:target/libs-mp/*:target/libs-cp/*' \
-  -Dapp.jdbc.url=jdbc:h2:./databases/task-db \
+  -cp "$(dirname "$0")/../lib/*" \
   com.github.phoswald.sample.ApplicationLauncher

@@ -6,8 +6,23 @@ Experiments with JavaFX
 
 ~~~
 $ mvn clean verify
-$ ./run-mp.sh
-$ ./run-cp.sh
+
+$ java \
+  -p target/sample-javafx-*-dist/lib/ \
+  --add-modules ALL-MODULE-PATH \
+  -Dapp.jdbc.url=jdbc:h2:./databases/task-db \
+  com.github.phoswald.sample.Application
+
+$ java \
+  -cp $(echo target/sample-javafx-*-dist/lib)/"*" \
+  -Dapp.jdbc.url=jdbc:h2:./databases/task-db \
+  com.github.phoswald.sample.ApplicationLauncher
+
+$ APP_JDBC_URL=jdbc:h2:./databases/task-db \
+  target/sample-javafx-*-dist/bin/run.sh
+
+$ APP_JDBC_URL=jdbc:h2:./databases/task-db \
+  target/sample-javafx-*-dist/bin/run-cp.sh
 ~~~
 
 ## Run JRE created by JLink 
@@ -15,7 +30,10 @@ $ ./run-cp.sh
 ~~~
 $ mvn clean verify
 $ ./build-jre.sh
-$ ./target/jre/bin/run
+$ ./target/jre/bin/java --list-modules
+
+$ APP_JDBC_URL=jdbc:h2:./databases/task-db \
+  ./target/jre/bin/run.sh
 ~~~
 
 ## Run from Eclipse

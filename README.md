@@ -28,8 +28,8 @@ $ APP_JDBC_URL=jdbc:h2:./databases/task-db \
 ## Run JRE created by JLink 
 
 ~~~
-$ mvn clean verify
-$ ./build-jre.sh
+$ mvn clean verify && ./build-jre.sh
+
 $ ./target/jre/bin/java --list-modules
 
 $ APP_JDBC_URL=jdbc:h2:./databases/task-db \

@@ -17,6 +17,7 @@
     <fileSet>
       <includes>
         <include>run*.sh</include>
+        <include>run*.cmd</include>
       </includes>
       <outputDirectory>bin</outputDirectory>
     </fileSet>

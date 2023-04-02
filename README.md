@@ -4,6 +4,8 @@ Experiments with JavaFX
 
 ## Run Standalone
 
+Linux / MacOS:
+
 ~~~
 $ mvn clean verify
 
@@ -25,7 +27,31 @@ $ APP_JDBC_URL=jdbc:h2:./databases/task-db \
   target/sample-javafx-*-dist/bin/run-cp.sh
 ~~~
 
+Windows:
+
+~~~
+$ mvn clean verify
+
+$ java ^
+  -p target\sample-javafx-1.0.0-SNAPSHOT-dist\lib ^
+  --add-modules ALL-MODULE-PATH ^
+  -Dapp.jdbc.url=jdbc:h2:%USERPROFILE%\Documents\databases\task-db ^
+  com.github.phoswald.sample.Application
+
+$ java ^
+  -cp target\sample-javafx-1.0.0-SNAPSHOT-dist\lib\* ^
+  -Dapp.jdbc.url=jdbc:h2:%USERPROFILE%\Documents\databases\task-db ^
+  com.github.phoswald.sample.ApplicationLauncher
+
+$ set APP_JDBC_URL=jdbc:h2:%USERPROFILE%\Documents\databases\task-db
+$ target\sample-javafx-1.0.0-SNAPSHOT-dist\bin\run.cmd
+$ target\sample-javafx-1.0.0-SNAPSHOT-dist\bin\run-cp.cmd
+$ set APP_JDBC_URL=
+~~~
+
 ## Run JRE created by JLink 
+
+Linux / MacOS:
 
 ~~~
 $ mvn clean verify && ./build-jre.sh

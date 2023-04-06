@@ -49,7 +49,7 @@ $ target\sample-javafx-1.0.0-SNAPSHOT-dist\bin\run-cp.cmd
 $ set APP_JDBC_URL=
 ~~~
 
-## Run JRE created by JLink 
+## Run JRE created by JLink
 
 Linux / MacOS:
 
@@ -57,10 +57,30 @@ Linux / MacOS:
 $ mvn clean verify && ./build-jlink.sh
 
 $ target/manual-jlink/bin/java --list-modules
+$ ls -la target/manual-jlink/lib/jars 
 
 $ APP_JDBC_URL=jdbc:h2:./databases/task-db \
   target/manual-jlink/bin/run.sh
 ~~~
+
+The `maven-jlink-plugin` cannot be used because jlink cannot process automatic modules
+(see special handling in `build-jlink.sh`).
+
+## Run executable and JRE created by JPackage
+
+Linux / MacOS:
+
+~~~
+$ mvn clean verify && ./build-jlink.sh && ./build-jpackage.sh
+
+$ ls -la target/manual-jpackage/sample-javafx/lib/app/
+
+$ APP_JDBC_URL=jdbc:h2:./databases/task-db \
+  target/manual-jpackage/sample-javafx/bin/sample-javafx
+~~~
+
+The `jpackage-maven-plugin` does not work because automatic modules cannot be processed and are ignored
+(see special handling in `build-jpackage.sh`).
 
 ## Run from Eclipse
 

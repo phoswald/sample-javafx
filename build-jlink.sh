@@ -5,16 +5,16 @@
 jlink \
   -p target/sample-javafx-*-dist/lib/ \
   --add-modules javafx.fxml,javafx.controls,jakarta.persistence,org.glassfish.jaxb.runtime,java.naming,org.slf4j.simple \
-  --output target/jre \
+  --output target/manual-jlink \
   --strip-debug --no-man-pages --no-header-files
-cp -r target/sample-javafx-*-dist/lib/ target/jre/lib/jars
-(cd target/jre/lib/jars && rm javafx* jaxb* slf4j*)
-rm -rf target/jre/legal
-cat > target/jre/bin/run.sh << 'EOF'
+cp -r target/sample-javafx-*-dist/lib/ target/manual-jlink/lib/jars
+(cd target/manual-jlink/lib/jars && rm javafx* jaxb* slf4j*)
+rm -rf target/manual-jlink/legal
+cat > target/manual-jlink/bin/run.sh << 'EOF'
 #!/bin/sh
 "$(dirname "$0")/java" \
   -p "$(dirname $0)/../lib/jars" \
   --add-modules ALL-MODULE-PATH \
   com.github.phoswald.sample.Application
 EOF
-chmod a+x target/jre/bin/run.sh
+chmod a+x target/manual-jlink/bin/run.sh

@@ -54,12 +54,12 @@ $ set APP_JDBC_URL=
 Linux / MacOS:
 
 ~~~
-$ mvn clean verify && ./build-jre.sh
+$ mvn clean verify && ./build-jlink.sh
 
-$ ./target/jre/bin/java --list-modules
+$ target/manual-jlink/bin/java --list-modules
 
 $ APP_JDBC_URL=jdbc:h2:./databases/task-db \
-  ./target/jre/bin/run.sh
+  target/manual-jlink/bin/run.sh
 ~~~
 
 ## Run from Eclipse

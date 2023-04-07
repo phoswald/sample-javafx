@@ -91,4 +91,70 @@
     </plugins>
   </build>
 
+  <profiles>
+    <profile>
+      <id>jlink</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jlink-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>jlink</goal>
+                </goals>
+                <configuration>
+                  <classifier>dist</classifier>
+                  <noHeaderFiles>true</noHeaderFiles>
+                  <noManPages>true</noManPages>
+                  <stripDebug>true</stripDebug>
+                </configuration>
+              </execution>  
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>jpackage</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.akman</groupId>
+            <artifactId>jpackage-maven-plugin</artifactId>
+            <version>0.1.5</version>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>jpackage</goal>
+                </goals>
+                <configuration>
+                  <dest>target/maven-jpackage</dest>
+                  <name>sample-javafx</name>
+                  <type>IMAGE</type>
+                  <modulepath>
+                    <dependencysets>
+                      <dependencyset>
+                        <includeoutput>true</includeoutput>
+                      </dependencyset>
+                    </dependencysets>
+                  </modulepath>
+                  <!--<addmodules>
+                    <addmodule>ALL-MODULE-PATH</addmodule>
+                  </addmodules>-->
+                  <module>com.github.phoswald.sample/com.github.phoswald.sample.Application</module>
+                  <javaoptions>-Dapp.foo=BAR -Dapp.bar=BAZ</javaoptions>
+                </configuration>
+              </execution>  
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 </project>

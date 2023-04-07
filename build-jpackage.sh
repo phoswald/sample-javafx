@@ -6,6 +6,5 @@ jpackage \
   -t app-image \
   --runtime-image target/manual-jlink \
   --input target/manual-jlink/lib/jars \
-  --main-class com.github.phoswald.sample.Application \
-  --main-jar sample-javafx-1.0.0-SNAPSHOT.jar
+  -m com.github.phoswald.sample/com.github.phoswald.sample.Application
 rm -rf target/manual-jpackage/sample-javafx/lib/runtime/lib/jars

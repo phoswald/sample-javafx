@@ -2,6 +2,10 @@
 
 Experiments with JavaFX
 
+**TODO**: Not working: 
+
+> java.lang.IllegalAccessError: superinterface check failed: class com.github.phoswald.sample.task.TaskEntity$HibernateProxy$QyMu3tVk (in module com.github.phoswald.sample) cannot access class org.hibernate.proxy.ProxyConfiguration (in module org.hibernate.orm.core) because module com.github.phoswald.sample does not read module org.hibernate.orm.core
+
 ## Run Standalone
 
 Linux / MacOS:
@@ -13,7 +17,7 @@ $ java \
   -p target/sample-javafx-*-dist/lib/ \
   --add-modules ALL-MODULE-PATH \
   -Dapp.jdbc.url=jdbc:h2:./databases/task-db \
-  com.github.phoswald.sample.Application
+  -m com.github.phoswald.sample/com.github.phoswald.sample.Application
 
 $ java \
   -cp $(echo target/sample-javafx-*-dist/lib)/"*" \
@@ -36,7 +40,7 @@ $ java ^
   -p target\sample-javafx-1.0.0-SNAPSHOT-dist\lib ^
   --add-modules ALL-MODULE-PATH ^
   -Dapp.jdbc.url=jdbc:h2:%USERPROFILE%\Documents\databases\task-db ^
-  com.github.phoswald.sample.Application
+  -m com.github.phoswald.sample/com.github.phoswald.sample.Application
 
 $ java ^
   -cp target\sample-javafx-1.0.0-SNAPSHOT-dist\lib\* ^

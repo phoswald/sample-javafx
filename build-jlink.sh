@@ -4,7 +4,7 @@
 # Modules passed to jlink can the be removed from the module path or class path.
 jlink \
   -p target/sample-javafx-*-dist/lib/ \
-  --add-modules javafx.fxml,javafx.controls,jakarta.persistence,org.glassfish.jaxb.runtime,java.naming,org.slf4j.simple \
+  --add-modules com.github.phoswald.sample,org.slf4j.simple,java.naming \
   --output target/manual-jlink \
   --strip-debug --no-man-pages --no-header-files
 cp -r target/sample-javafx-*-dist/lib/ target/manual-jlink/lib/jars
@@ -15,6 +15,6 @@ cat > target/manual-jlink/bin/run.sh << 'EOF'
 "$(dirname "$0")/java" \
   -p "$(dirname $0)/../lib/jars" \
   --add-modules ALL-MODULE-PATH \
-  com.github.phoswald.sample.Application
+  -m com.github.phoswald.sample/com.github.phoswald.sample.Application
 EOF
 chmod a+x target/manual-jlink/bin/run.sh

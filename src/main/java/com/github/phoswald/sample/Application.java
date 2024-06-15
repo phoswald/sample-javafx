@@ -25,7 +25,7 @@ public class Application extends javafx.application.Application {
     public void start(Stage primaryStage) throws IOException {
         ApplicationModule.setup(new ApplicationModule(), this);
 
-        Pane root = (Pane) FXMLLoader.load(getClass().getResource("/fxml/home.fxml"));
+        Pane root = (Pane) FXMLLoader.load(getClass().getResource("/fxml/web.fxml"));
         primaryStage.setTitle("sample-javafx");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

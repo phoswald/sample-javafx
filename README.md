@@ -93,3 +93,8 @@ The application can be started from Eclipse in a non-modular way.
 - It is possible, although not officially supported, to run the application in a non-modular way from the class path 
   (using only the `-cp` option). For that, the main class must not extend `javafx.application.Application` 
   (see the additional main class `ApplicationLauncher`, which simply delegates to `Application`).
+
+## Issues with profiles and classifiers in Maven
+
+Maven 3.9.7 does not correctly set the property `javafx.platform` from profiles of `org.openjfx:javafx`.
+Manually setting it to `linux` works from the CLI, but not within Eclipse.

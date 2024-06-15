@@ -12,10 +12,7 @@ import org.w3c.dom.events.EventTarget;
 import com.github.phoswald.sample.Application;
 import com.github.phoswald.sample.ApplicationModule;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
-import javafx.concurrent.Worker.State;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.web.WebEngine;
@@ -29,69 +26,60 @@ public class WebController implements Initializable {
 
     @FXML
     private WebView webView;
-    
+
     private WebEngine webEngine;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.info("init controller...");
 
-        logger.info("configuring...");
-
-        webEngine = webView.getEngine();
         webView.setContextMenuEnabled(false);
+        webEngine = webView.getEngine();
+        webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == Worker.State.SUCCEEDED) {
+                logger.info("init document...");
+                addWindowMember("doIt1", this::onDoIt1);
+                addEventListener("doIt2", "click", this::onDoIt2);
+                logger.info("init document done.");
+            }
+        });
 
-        webEngine.getLoadWorker().stateProperty().addListener(new MyStageChangeListener());
-
-        // webEngine.load("http://google.com");
-        
         String html = """
                 <html>
                   <body>
                     <h1>sample-javafx</h1>
                     <p><a href="http://google.com">Google</a></p>
-                    <p><a href="#" onclick="myCallbackObject.doIt1();">Click 1</a></p>
+                    <p><a href="#" onclick="doIt1.invoke();">Click 1</a></p>
                     <p><a href="#" id="doIt2">Click 2</a></p>
                   </body>
                 </html>
                 """;
-        logger.info("loading HTML");
         webEngine.loadContent(html, "text/html");
+        // webEngine.load("http://google.com");
 
-        logger.info("configuring done.");
+        logger.info("init controller done.");
     }
 
-    public class MyStageChangeListener implements ChangeListener<Worker.State> {
-
-        @Override
-        public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
-            logger.info("state is {}", newValue);
-            if (newValue != Worker.State.SUCCEEDED) {
-                return;
-            } else {
-                logger.info("configuring myCallbackObject");
-                JSObject window = (JSObject) webEngine.executeScript("window");
-                window.setMember("myCallbackObject", new MyCallbackObject());
-                
-                logger.info("configuring doIt2");
-                ((EventTarget) webEngine.getDocument().getElementById("doIt2"))
-                    .addEventListener("click", new MyEventListener(), false);
-            }
-        }
-
+    private void addEventListener(String elementId, String event, EventListener listener) {
+        ((EventTarget) webEngine.getDocument().getElementById(elementId)).addEventListener(event, listener, false);
     }
 
-    public class MyCallbackObject {
-
-        public void doIt1() {
-            logger.info("doIt1() called");
-        }
+    private void addWindowMember(String name, Runnable callback) {
+        ((JSObject) webEngine.executeScript("window")).setMember(name, new InvokeRunnable(callback));
     }
-    
-    public class MyEventListener implements EventListener {
 
-        @Override
-        public void handleEvent(Event evt) {
-            logger.info("doIt2() called");
+    public void onDoIt1() {
+        logger.info("doIt1() called");
+    }
+
+    public void onDoIt2(Event evt) {
+        logger.info("doIt2() called");
+    }
+
+    public static record InvokeRunnable(Runnable runnable) {
+
+        public void invoke() {
+            runnable.run();
         }
     }
 }

@@ -28,11 +28,15 @@ public class HomeController implements Initializable {
     @FXML
     private Button tasksButton;
 
+    @FXML
+    private Button webButton;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         homeButton.setOnAction(this::onHome);
         sampleButton.setOnAction(this::onSample);
         tasksButton.setOnAction(this::onTasks);
+        webButton.setOnAction(this::onWeb);
     }
 
     private void onHome(ActionEvent event) {
@@ -48,5 +52,10 @@ public class HomeController implements Initializable {
     private void onTasks(ActionEvent event) {
         logger.info("Tasks button fired.");
         application.updateScene("/fxml/task-list.fxml");
+    }
+
+    private void onWeb(ActionEvent event) {
+        logger.info("Web button fired.");
+        application.updateScene("/fxml/web.fxml");
     }
 }

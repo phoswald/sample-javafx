@@ -11,6 +11,7 @@
       <Button fx:id="homeButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="98.0" text="Home" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
       <Button fx:id="sampleButton" layoutX="138.0" layoutY="14.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="98.0" text="Sample" AnchorPane.leftAnchor="138.0" AnchorPane.topAnchor="14.0" />
       <Button fx:id="tasksButton" layoutX="259.0" layoutY="14.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="98.0" text="Tasks" AnchorPane.leftAnchor="259.0" AnchorPane.topAnchor="14.0" />
+      <Button fx:id="webButton" layoutX="380.0" layoutY="14.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="98.0" text="Web" AnchorPane.leftAnchor="380.0" AnchorPane.topAnchor="14.0" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hello, world!" textAlignment="CENTER" wrappingWidth="563.7294921875" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="52.0">
          <font>
             <Font size="24.0" />

@@ -5,9 +5,13 @@ import java.util.ResourceBundle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventListener;
 import org.w3c.dom.events.EventTarget;
+import org.w3c.dom.html.HTMLInputElement;
 
 import com.github.phoswald.sample.Application;
 import com.github.phoswald.sample.ApplicationModule;
@@ -29,6 +33,8 @@ public class WebController implements Initializable {
 
     private WebEngine webEngine;
 
+    private Document documentNode;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         logger.info("init controller...");
@@ -38,8 +44,9 @@ public class WebController implements Initializable {
         webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == Worker.State.SUCCEEDED) {
                 logger.info("init document...");
-                addWindowMember("doIt1", this::onDoIt1);
-                addEventListener("doIt2", "click", this::onDoIt2);
+                documentNode = webEngine.getDocument();
+                addWindowMember("link1", this::onLink1);
+                addElementEventListener("link2", "click", this::onLink2);
                 logger.info("init document done.");
             }
         });
@@ -49,8 +56,10 @@ public class WebController implements Initializable {
                   <body>
                     <h1>sample-javafx</h1>
                     <p><a href="http://google.com">Google</a></p>
-                    <p><a href="#" onclick="doIt1.invoke();">Click 1</a></p>
-                    <p><a href="#" id="doIt2">Click 2</a></p>
+                    <p>Name: <input type="text" id="input"></p>
+                    <p><a href="#" onclick="link1.invoke();">Link 1</a></p>
+                    <p><a href="#" id="link2">Link 2</a></p>
+                    <p>Message: <span id="output">???</span</p>
                   </body>
                 </html>
                 """;
@@ -60,20 +69,46 @@ public class WebController implements Initializable {
         logger.info("init controller done.");
     }
 
-    private void addEventListener(String elementId, String event, EventListener listener) {
-        ((EventTarget) webEngine.getDocument().getElementById(elementId)).addEventListener(event, listener, false);
+    private void addWindowMember(String name, Runnable runnable) {
+        Object windowObject = webEngine.executeScript("window");
+        if (windowObject instanceof JSObject windowJSObject) {
+            windowJSObject.setMember(name, new InvokeRunnable(runnable));
+        }
     }
 
-    private void addWindowMember(String name, Runnable callback) {
-        ((JSObject) webEngine.executeScript("window")).setMember(name, new InvokeRunnable(callback));
+    private void addElementEventListener(String elementId, String event, EventListener listener) {
+        Element elementNode = documentNode.getElementById(elementId);
+        if (elementNode instanceof EventTarget eventTarget) {
+            eventTarget.addEventListener(event, listener, false);
+        }
     }
 
-    public void onDoIt1() {
-        logger.info("doIt1() called");
+    private void setElementInnerText(String elementId, String text) {
+        Element elementNode = documentNode.getElementById(elementId);
+        if(elementNode != null) {
+            Node childNode;
+            while ((childNode = elementNode.getFirstChild()) != null) {
+                elementNode.removeChild(childNode);
+            }
+            elementNode.appendChild(documentNode.createTextNode(text));
+        }
+    }
+    
+    private String getInputValue(String elementId) {
+        Element elementNode = documentNode.getElementById(elementId);
+        if(elementNode instanceof HTMLInputElement inputElementNode) {
+            return inputElementNode.getValue();
+        } else {
+            return null;
+        }
     }
 
-    public void onDoIt2(Event evt) {
-        logger.info("doIt2() called");
+    public void onLink1() {
+        setElementInnerText("output", "Hello, " + getInputValue("input") + "!");
+    }
+
+    public void onLink2(Event evt) {
+        setElementInnerText("output", "Hallo, " + getInputValue("input") + "!");
     }
 
     public static record InvokeRunnable(Runnable runnable) {

@@ -13,9 +13,10 @@ public class HomePage {
                   <body>
                     <h1>sample-javafx</h1>
                     <p><a href="http://google.com">Google</a></p>
-                    <p>Name: <input type="text" id="input"></p>
-                    <p><a href="#" onclick="link1.invoke();">Link 1</a></p>
-                    <p><a href="#" id="link2">Link 2</a></p>
+                    <p>Name: <input type="text" id="inputName"></p>
+                    <p>HTML: <input type="text" id="inputHtml"></p>
+                    <p><a href="#" onclick="processName.invoke();">Link 1</a></p>
+                    <p><a href="#" id="processHtml">Link 2</a></p>
                     <p>Message: <span id="output">???</span></p>
                   </body>
                 </html>
@@ -23,16 +24,17 @@ public class HomePage {
     }
 
     private void onLoaded() {
-        controller.setInputValue("input", "Stranger");
-        controller.addWindowMember("link1", this::onLink1);
-        controller.addElementEventListener("link2", "click", this::onLink2);
+        controller.setInputValue("inputName", "Stranger");
+        controller.setInputValue("inputHtml", "<b>Hello, <u>World</u> and <a href=\"http://google.com\">Google</a>!</b>");
+        controller.addWindowMember("processName", this::onProcessName);
+        controller.addElementEventListener("processHtml", "click", this::onProcessHtml);
     }
 
-    private void onLink1() {
-        controller.setElementInnerText("output", "Hello, " + controller.getInputValue("input") + "!");
+    private void onProcessName() {
+        controller.setElementInnerText("output", "Hello, " + controller.getInputValue("inputName") + "!");
     }
 
-    private void onLink2() {
-        controller.setElementInnerHtml("output", "Hallo, <b>" + controller.getInputValue("input") + "</b>!");
+    private void onProcessHtml() {
+        controller.setElementInnerHtml("output", controller.getInputValue("inputHtml"));
     }
 }

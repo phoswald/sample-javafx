@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.w3c.dom.events.EventTarget;
 import org.w3c.dom.html.HTMLInputElement;
@@ -128,9 +130,9 @@ public class WebController implements Initializable {
 //          DOMImplementation domImpl = documentNode.getImplementation();
             DOMImplementation domImpl = DOMImplementationRegistry.newInstance().getDOMImplementation("");
             DOMImplementationLS domImplLS = (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
-            LSParser parser = domImplLS.createLSParser(DOMImplementationLS.MODE_SYNCHRONOUS, null);
             LSInput input = domImplLS.createLSInput();
             input.setCharacterStream(new StringReader("<html xmlns='http://www.w3.org/1999/xhtml'><body>" + html + "</body></html>"));
+            LSParser parser = domImplLS.createLSParser(DOMImplementationLS.MODE_SYNCHRONOUS, null);
             Document innerDocument = parser.parse(input);
             return cloneNode(innerDocument.getElementsByTagName("body").item(0));
 
@@ -139,16 +141,22 @@ public class WebController implements Initializable {
         }
     }
 
-    private Node cloneNode(Node inputNode) {
-        switch (inputNode.getNodeType()) {
+    private Node cloneNode(Node node) {
+        switch (node.getNodeType()) {
         case Node.ELEMENT_NODE:
-            Node outputNode = documentNode.createElementNS(inputNode.getNamespaceURI(), inputNode.getLocalName());
-            for (int item = 0; item < inputNode.getChildNodes().getLength(); item++) {
-                outputNode.appendChild(cloneNode(inputNode.getChildNodes().item(item)));
+            Element result = documentNode.createElementNS(node.getNamespaceURI(), node.getLocalName());
+            NamedNodeMap attributes = node.getAttributes();
+            for (int item = 0; item < attributes.getLength(); item++) {
+                Node attribute = attributes.item(item);
+                result.setAttributeNS(attribute.getNamespaceURI(), attribute.getLocalName(), attribute.getNodeValue());
             }
-            return outputNode;
+            NodeList childNodes = node.getChildNodes();
+            for (int item = 0; item < childNodes.getLength(); item++) {
+                result.appendChild(cloneNode(node.getChildNodes().item(item)));
+            }
+            return result;
         case Node.TEXT_NODE:
-            return documentNode.createTextNode(inputNode.getTextContent());
+            return documentNode.createTextNode(node.getTextContent());
         default:
             throw new UnsupportedOperationException();
         }

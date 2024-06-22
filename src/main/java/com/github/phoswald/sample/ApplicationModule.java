@@ -1,19 +1,21 @@
 package com.github.phoswald.sample;
 
 import java.util.HashMap;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
-
-import com.github.phoswald.sample.task.TaskRepository;
-import com.github.phoswald.sample.utils.ConfigProvider;
 
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
+import com.github.phoswald.sample.javafx.HomePage;
+import com.github.phoswald.sample.javafx.WebController;
+import com.github.phoswald.sample.task.TaskRepository;
+import com.github.phoswald.sample.utils.ConfigProvider;
+
 public class ApplicationModule {
 
     static {
-        // Hibernate: auto-detection falls back to JUL, slf4j is only used if logback is
-        // present
+        // Hibernate: auto-detection falls back to JUL, slf4j is only used if logback is present
         System.setProperty("org.jboss.logging.provider", "slf4j");
     }
 
@@ -54,5 +56,9 @@ public class ApplicationModule {
             emf = Persistence.createEntityManagerFactory("taskDS", props);
         }
         return emf;
+    }
+    
+    public Consumer<WebController> getDefaultPage() {
+        return HomePage::new;
     }
 }

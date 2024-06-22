@@ -17,7 +17,6 @@ import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSParser;
 
-import com.github.phoswald.sample.Application;
 import com.github.phoswald.sample.ApplicationModule;
 
 import javafx.concurrent.Worker;
@@ -30,9 +29,6 @@ import netscape.javascript.JSObject;
 public class WebController implements Initializable {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    private final Application application = ApplicationModule.instance().getApplication();
-
-    private Page page = new HomePage(this);
 
     @FXML
     private WebView webView;
@@ -40,44 +36,48 @@ public class WebController implements Initializable {
     private WebEngine webEngine;
 
     private Document documentNode;
+    
+    private Runnable loadCallback;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        logger.info("init controller...");
+        logger.info("Initializing...");
         webView.setContextMenuEnabled(false);
         webEngine = webView.getEngine();
         webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == Worker.State.SUCCEEDED) {
-                logger.info("init document...");
                 documentNode = webEngine.getDocument();
-                page.onLoaded();
-                logger.info("init document done.");
+                loadCallback.run();
+                logger.info("Loading done.");
             }
         });
-        logger.info("init controller done.");
-        
-        page.load();
+        logger.info("Initializing done.");
+        ApplicationModule.instance().getDefaultPage().accept(this); // expected to call loadHtml() or loadUrl()
     }
     
-    void loadHtml(String html) {
+    void loadHtml(String html, Runnable callback) {
+        logger.info("Loading HTML (size {})...", html.length());
+        loadCallback = callback;
         webEngine.loadContent(html, "text/html");
     }
     
-    void loadUrl(String url) {
+    void loadUrl(String url, Runnable callback) {
+        logger.info("Loading URL={} ...", url);
+        loadCallback = callback;
         webEngine.load(url);
     }
 
-    void addWindowMember(String name, Runnable runnable) {
+    void addWindowMember(String name, Runnable callback) {
         Object windowObject = webEngine.executeScript("window");
         if (windowObject instanceof JSObject windowJSObject) {
-            windowJSObject.setMember(name, new Invoker(runnable));
+            windowJSObject.setMember(name, new Invoker(callback));
         }
     }
 
-    void addElementEventListener(String elementId, String event, Runnable runnable) {
+    void addElementEventListener(String elementId, String event, Runnable callback) {
         Element elementNode = documentNode.getElementById(elementId);
         if (elementNode instanceof EventTarget eventTarget) {
-            eventTarget.addEventListener(event, e -> runnable.run(), false);
+            eventTarget.addEventListener(event, e -> callback.run(), false);
         }
     }
 
@@ -91,13 +91,6 @@ public class WebController implements Initializable {
             elementNode.appendChild(documentNode.createTextNode(text));
         }
     }
-
-//  void setElementInnerHtml(String elementId, String html) {
-//      Element elementNode = documentNode.getElementById(elementId);
-//      if(elementNode instanceof ElementImpl elementNodeImpl) { // com.sun.webkit.dom.ElementImpl
-//          elementNodeImpl.setInnerHTML(html); 
-//      }
-//  }
 
     void setElementInnerHtml(String elementId, String html) {
         Element elementNode = documentNode.getElementById(elementId);
@@ -123,6 +116,13 @@ public class WebController implements Initializable {
         }
     }
 
+    void setInputValue(String elementId, String value) {
+        Element elementNode = documentNode.getElementById(elementId);
+        if (elementNode instanceof HTMLInputElement inputElementNode) {
+            inputElementNode.setValue(value);
+        }
+    }
+
     private Node parseHtml(String html) {
         try {
 //          DOMImplementation domImpl = documentNode.getImplementation();
@@ -130,8 +130,7 @@ public class WebController implements Initializable {
             DOMImplementationLS domImplLS = (DOMImplementationLS) domImpl.getFeature("LS", "3.0");
             LSParser parser = domImplLS.createLSParser(DOMImplementationLS.MODE_SYNCHRONOUS, null);
             LSInput input = domImplLS.createLSInput();
-            input.setCharacterStream(
-                    new StringReader("<html xmlns='http://www.w3.org/1999/xhtml'><body>" + html + "</body></html>"));
+            input.setCharacterStream(new StringReader("<html xmlns='http://www.w3.org/1999/xhtml'><body>" + html + "</body></html>"));
             Document innerDocument = parser.parse(input);
             return cloneNode(innerDocument.getElementsByTagName("body").item(0));
 

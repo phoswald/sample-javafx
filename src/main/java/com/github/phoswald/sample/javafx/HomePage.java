@@ -1,15 +1,13 @@
 package com.github.phoswald.sample.javafx;
 
-class HomePage implements Page {
+public class HomePage {
 
     private final WebController controller;
 
-    HomePage(WebController controller) {
+    public HomePage(WebController controller) {
         this.controller = controller;
-    }
-    
-    @Override
-    public void load() {
+        
+        // controller.loadUrl("https://google.ch/", this::onLoaded);
         controller.loadHtml("""
                 <html>
                   <body>
@@ -21,15 +19,11 @@ class HomePage implements Page {
                     <p>Message: <span id="output">???</span></p>
                   </body>
                 </html>
-                """);
+                """, this::onLoaded);
     }
 
-//    public void load() {
-//        controller.loadUrl("https://google.ch/");        
-//    }
-
-    @Override
-    public void onLoaded() {
+    private void onLoaded() {
+        controller.setInputValue("input", "Stranger");
         controller.addWindowMember("link1", this::onLink1);
         controller.addElementEventListener("link2", "click", this::onLink2);
     }

@@ -45,6 +45,12 @@
       <version>3.2.0</version>
     </dependency>
     <dependency>
+      <groupId>jakarta.enterprise</groupId>
+      <artifactId>jakarta.enterprise.cdi-api</artifactId>
+      <version>3.0.1</version> <!-- only required by module-info of jakarta.transaction-api -->
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
       <groupId>org.hibernate.orm</groupId>
       <artifactId>hibernate-core</artifactId>
       <version>6.6.4.Final</version> <!-- 6.2.3.Final (API: 3.1.0) does not work due to modulepath problem -->

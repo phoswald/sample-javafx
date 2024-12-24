@@ -47,7 +47,7 @@
     <dependency>
       <groupId>jakarta.enterprise</groupId>
       <artifactId>jakarta.enterprise.cdi-api</artifactId>
-      <version>3.0.1</version> <!-- only required by module-info of jakarta.transaction-api -->
+      <version>4.1.0</version> <!-- only required by module-info of jakarta.transaction-api -->
       <scope>runtime</scope>
     </dependency>
     <dependency>

@@ -42,7 +42,7 @@
     <dependency>
       <groupId>org.hibernate.orm</groupId>
       <artifactId>hibernate-core</artifactId>
-      <version>6.5.2.Final</version> <!-- 6.2.3.Final (API: 3.1.0) does not work due to modulepath problem -->
+      <version>6.6.4.Final</version> <!-- 6.2.3.Final (API: 3.1.0) does not work due to modulepath problem -->
       <scope>runtime</scope>
     </dependency>
     <dependency>

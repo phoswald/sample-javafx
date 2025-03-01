@@ -19,11 +19,14 @@ import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSParser;
 
+import com.github.phoswald.sample.Application;
 import com.github.phoswald.sample.ApplicationModule;
 
 import javafx.concurrent.Worker;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
@@ -31,6 +34,10 @@ import netscape.javascript.JSObject;
 public class WebController implements Initializable {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Application application = ApplicationModule.instance().getApplication();
+
+    @FXML
+    private Button homeButton;
 
     @FXML
     private WebView webView;
@@ -43,6 +50,7 @@ public class WebController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        homeButton.setOnAction(this::onHome);
         logger.info("Initializing...");
         webView.setContextMenuEnabled(false);
         webEngine = webView.getEngine();
@@ -55,6 +63,11 @@ public class WebController implements Initializable {
         });
         logger.info("Initializing done.");
         ApplicationModule.instance().getDefaultPage().accept(this); // expected to call loadHtml() or loadUrl()
+    }
+
+    private void onHome(ActionEvent event) {
+        logger.info("Home button fired.");
+        application.updateScene("/fxml/home.fxml");
     }
     
     void loadHtml(String html, Runnable callback) {

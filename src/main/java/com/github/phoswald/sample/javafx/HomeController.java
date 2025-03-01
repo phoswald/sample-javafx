@@ -29,6 +29,9 @@ public class HomeController implements Initializable {
     private Button tasksButton;
 
     @FXML
+    private Button canvasButton;
+
+    @FXML
     private Button webButton;
 
     @Override
@@ -36,6 +39,7 @@ public class HomeController implements Initializable {
         homeButton.setOnAction(this::onHome);
         sampleButton.setOnAction(this::onSample);
         tasksButton.setOnAction(this::onTasks);
+        canvasButton.setOnAction(this::onCanvas);
         webButton.setOnAction(this::onWeb);
     }
 
@@ -52,6 +56,11 @@ public class HomeController implements Initializable {
     private void onTasks(ActionEvent event) {
         logger.info("Tasks button fired.");
         application.updateScene("/fxml/task-list.fxml");
+    }
+
+    private void onCanvas(ActionEvent event) {
+        logger.info("Canvas button fired.");
+        application.updateScene("/fxml/canvas.fxml");
     }
 
     private void onWeb(ActionEvent event) {

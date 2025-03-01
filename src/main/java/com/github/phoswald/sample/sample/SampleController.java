@@ -3,6 +3,7 @@ package com.github.phoswald.sample.sample;
 import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.TreeMap;
 import java.util.function.Function;
 
 import org.slf4j.Logger;
@@ -60,10 +61,10 @@ public class SampleController implements Initializable {
         homeButton.setOnAction(this::onHome);
         greeting.setText("Hello, world!");
         sampleConfig.setText("Blubber");
-        envVars.getItems().addAll(System.getenv().entrySet());
+        envVars.getItems().addAll(new TreeMap<>(System.getenv()).entrySet());
         envVarName.setCellValueFactory(createCellValueFactory(Map.Entry::getKey));
         envVarValue.setCellValueFactory(createCellValueFactory(Map.Entry::getValue));
-        sysProps.getItems().addAll(System.getProperties().entrySet());
+        sysProps.getItems().addAll(new TreeMap<>(System.getProperties()).entrySet());
         sysPropName.setCellValueFactory(createCellValueFactory(Map.Entry::getKey));
         sysPropValue.setCellValueFactory(createCellValueFactory(Map.Entry::getValue));
     }

@@ -38,7 +38,7 @@
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-web</artifactId>
-      <version>23.0.2</version>
+      <version>26-ea+16</version>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>

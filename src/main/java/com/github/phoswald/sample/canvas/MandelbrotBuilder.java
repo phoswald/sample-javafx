@@ -8,7 +8,7 @@ import javafx.scene.image.PixelFormat;
 import javafx.scene.image.WritableImage;
 
 class MandelbrotBuilder {
-    
+
     private static final int BLACK = 0xFF000000;
     private static final int WHITE = 0xFFFFFFFF;
     private static final int BLUE = 0xFF0000FF;
@@ -17,25 +17,25 @@ class MandelbrotBuilder {
     private final double ptMinImag = 2.5;
     private final double ptMaxReal = 2.5;
     private final double ptMaxImag = -2.5;
-    
+
     private final int width;
     private final int height;
     private final int[] pixelArray;
     private final PixelBuffer<IntBuffer> pixelBuffer;
     private final WritableImage image;
     private int iterMax = 2;
-    
+
     MandelbrotBuilder(int width, int height) {
         this.width = width;
         this.height = height;
         this.pixelArray = new int[width * height];
         this.pixelBuffer = new PixelBuffer<>(
-                width, height, 
-                IntBuffer.wrap(pixelArray), 
+                width, height,
+                IntBuffer.wrap(pixelArray),
                 PixelFormat.getIntArgbPreInstance());
         this.image = new WritableImage(pixelBuffer);
     }
-    
+
     Image getImage() {
         return image;
     }
@@ -65,6 +65,6 @@ class MandelbrotBuilder {
             }
         }
         iterMax++;
-        pixelBuffer.updateBuffer(pb -> null);
+        pixelBuffer.updateBuffer(_ -> null);
     }
 }

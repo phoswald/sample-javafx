@@ -45,7 +45,7 @@ public class WebController implements Initializable {
     private WebEngine webEngine;
 
     private Document documentNode;
-    
+
     private Runnable loadCallback;
 
     @Override
@@ -54,7 +54,7 @@ public class WebController implements Initializable {
         logger.info("Initializing...");
         webView.setContextMenuEnabled(false);
         webEngine = webView.getEngine();
-        webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
+        webEngine.getLoadWorker().stateProperty().addListener((_, _, newValue) -> {
             if (newValue == Worker.State.SUCCEEDED) {
                 documentNode = webEngine.getDocument();
                 loadCallback.run();
@@ -69,13 +69,13 @@ public class WebController implements Initializable {
         logger.info("Home button fired.");
         application.updateScene("/fxml/home.fxml");
     }
-    
+
     void loadHtml(String html, Runnable callback) {
         logger.info("Loading HTML (size {})...", html.length());
         loadCallback = callback;
         webEngine.loadContent(html, "text/html");
     }
-    
+
     void loadUrl(String url, Runnable callback) {
         logger.info("Loading URL={} ...", url);
         loadCallback = callback;
@@ -92,7 +92,7 @@ public class WebController implements Initializable {
     void addElementEventListener(String elementId, String event, Runnable callback) {
         Element elementNode = documentNode.getElementById(elementId);
         if (elementNode instanceof EventTarget eventTarget) {
-            eventTarget.addEventListener(event, e -> callback.run(), false);
+            eventTarget.addEventListener(event, _ -> callback.run(), false);
         }
     }
 

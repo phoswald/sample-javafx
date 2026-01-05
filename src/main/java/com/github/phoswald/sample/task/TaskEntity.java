@@ -11,7 +11,7 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "TASK")
+@Table(name = "task_")
 @NamedQueries({ //
         @NamedQuery(name = TaskEntity.SELECT_ALL, query = "select t from TaskEntity t order by t.timestamp desc") })
 public class TaskEntity {
@@ -19,23 +19,23 @@ public class TaskEntity {
     static final String SELECT_ALL = "TaskEntity.Select";
 
     @Id
-    @Column(name = "TASK_ID")
+    @Column(name = "task_id_")
     private String taskId;
 
-    @Column(name = "USER_ID")
+    @Column(name = "user_id_")
     private String userId;
 
-    @Column(name = "TIMESTAMP")
+    @Column(name = "timestamp_")
     private Instant timestamp;
 
-    @Column(name = "TITLE")
+    @Column(name = "title_")
     private String title;
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = "description_")
     private String description;
 
-    @Column(name = "DONE")
-    private boolean done;
+    @Column(name = "done_")
+    private Boolean done;
 
     public String getTaskId() {
         return taskId;
@@ -78,10 +78,10 @@ public class TaskEntity {
     }
 
     public boolean isDone() {
-        return done;
+        return done == null ? false : done.booleanValue();
     }
 
     public void setDone(boolean done) {
-        this.done = done;
+        this.done = Boolean.valueOf(done);
     }
 }

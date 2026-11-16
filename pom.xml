@@ -53,9 +53,9 @@
     </dependency>
     <dependency>
       <!-- only required by module-info of jakarta.transaction-api -->
-      <groupId>jakarta.enterprise</groupId>
-      <artifactId>jakarta.enterprise.cdi-api</artifactId>
-      <version>4.1.0</version> <!-- CDI 4.1 is part of Jakarta EE 11 -->
+      <groupId>jakarta.cdi</groupId>
+      <artifactId>jakarta.cdi-api</artifactId>
+      <version>5.0.0</version> <!-- CDI 4.1 is part of Jakarta EE 11 -->
       <scope>runtime</scope>
     </dependency>
     <dependency>
